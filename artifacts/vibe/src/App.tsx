@@ -13,23 +13,21 @@ function Navbar() {
   const [location] = useLocation();
   return (
     <nav className="sticky top-0 z-50 w-full border-b-4 border-primary bg-background/95 backdrop-blur">
-      <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3">
+      <div className="container mx-auto px-3 md:px-4 h-16 md:h-20 flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-2 md:gap-3">
           <img
             src="/vibe-logo.jpeg"
             alt="VIBE Logo"
-            className="w-12 h-12 rounded-lg border-2 border-primary object-cover"
+            className="w-9 h-9 md:w-12 md:h-12 rounded-lg border-2 border-primary object-cover"
           />
-          <span className="font-heading text-2xl tracking-tight text-primary">VIBE</span>
+          <span className="font-heading text-xl md:text-2xl tracking-tight text-primary">VIBE</span>
         </Link>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 md:gap-2">
           <Link
             href="/"
             data-testid="nav-order"
-            className={`px-5 py-2 font-heading text-sm rounded-xl border-2 transition-all ${
-              location === "/"
-                ? "bg-primary border-primary text-white"
-                : "border-border text-muted-foreground hover:border-primary hover:text-primary"
+            className={`px-3 md:px-5 py-1.5 md:py-2 font-heading text-xs md:text-sm rounded-xl border-2 transition-all ${
+              location === "/" ? "bg-primary border-primary text-white" : "border-border text-muted-foreground hover:border-primary hover:text-primary"
             }`}
           >
             Order
@@ -37,10 +35,8 @@ function Navbar() {
           <Link
             href="/kitchen"
             data-testid="nav-kitchen"
-            className={`px-5 py-2 font-heading text-sm rounded-xl border-2 transition-all ${
-              location === "/kitchen"
-                ? "bg-accent border-accent text-background"
-                : "border-border text-muted-foreground hover:border-accent hover:text-accent"
+            className={`px-3 md:px-5 py-1.5 md:py-2 font-heading text-xs md:text-sm rounded-xl border-2 transition-all ${
+              location === "/kitchen" ? "bg-accent border-accent text-background" : "border-border text-muted-foreground hover:border-accent hover:text-accent"
             }`}
           >
             Kitchen
@@ -48,10 +44,8 @@ function Navbar() {
           <Link
             href="/admin"
             data-testid="nav-admin"
-            className={`px-5 py-2 font-heading text-sm rounded-xl border-2 transition-all ${
-              location === "/admin"
-                ? "bg-secondary border-secondary text-white"
-                : "border-border text-muted-foreground hover:border-secondary hover:text-secondary"
+            className={`px-3 md:px-5 py-1.5 md:py-2 font-heading text-xs md:text-sm rounded-xl border-2 transition-all ${
+              location === "/admin" ? "bg-secondary border-secondary text-white" : "border-border text-muted-foreground hover:border-secondary hover:text-secondary"
             }`}
           >
             Admin

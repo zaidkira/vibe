@@ -1,9 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  useListOrders,
-  useUpdateOrderStatus,
-  getListOrdersQueryKey,
-} from "@workspace/api-client-react";
+import { useListOrders, useUpdateOrderStatus, getListOrdersQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -14,12 +10,7 @@ export default function KitchenPage() {
 
   const { data: orders, isLoading } = useListOrders(
     {},
-    {
-      query: {
-        queryKey: getListOrdersQueryKey(),
-        refetchInterval: 10000,
-      },
-    }
+    { query: { queryKey: getListOrdersQueryKey(), refetchInterval: 10000 } }
   );
 
   const updateStatus = useUpdateOrderStatus();
@@ -31,36 +22,30 @@ export default function KitchenPage() {
     updateStatus.mutate(
       { id, data: { status: "done" } },
       {
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: getListOrdersQueryKey() });
-          toast({ title: "Order marked done!" });
-        },
-        onError: () => {
-          toast({ title: "Error", description: "Could not update order.", variant: "destructive" });
-        },
+        onSuccess: () => { queryClient.invalidateQueries({ queryKey: getListOrdersQueryKey() }); toast({ title: "Order marked done!" }); },
+        onError: () => toast({ title: "Error", description: "Could not update order.", variant: "destructive" }),
       }
     );
   }
 
   function formatTime(dateStr: string) {
-    const d = new Date(dateStr);
-    return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    return new Date(dateStr).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <div className="mb-6 flex items-end justify-between">
+    <div className="p-4 md:p-6 max-w-7xl mx-auto pb-20">
+      <div className="mb-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div>
-          <h1 className="font-heading text-5xl text-accent">Kitchen</h1>
-          <p className="text-muted-foreground text-sm uppercase tracking-widest">Live order feed — refreshes every 10s</p>
+          <h1 className="font-heading text-4xl md:text-5xl text-accent">Kitchen</h1>
+          <p className="text-muted-foreground text-xs uppercase tracking-widest">Live feed — refreshes every 10s</p>
         </div>
-        <div className="flex gap-4 text-center">
-          <div className="bg-card border-2 border-primary rounded-xl px-4 py-2">
-            <p className="font-heading text-3xl text-primary">{pending.length}</p>
+        <div className="flex gap-3">
+          <div className="bg-card border-2 border-primary rounded-xl px-4 py-2 text-center">
+            <p className="font-heading text-2xl md:text-3xl text-primary">{pending.length}</p>
             <p className="text-xs text-muted-foreground uppercase">Pending</p>
           </div>
-          <div className="bg-card border-2 border-accent rounded-xl px-4 py-2">
-            <p className="font-heading text-3xl text-accent">{done.length}</p>
+          <div className="bg-card border-2 border-accent rounded-xl px-4 py-2 text-center">
+            <p className="font-heading text-2xl md:text-3xl text-accent">{done.length}</p>
             <p className="text-xs text-muted-foreground uppercase">Done</p>
           </div>
         </div>
@@ -68,9 +53,7 @@ export default function KitchenPage() {
 
       {isLoading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <Skeleton key={i} className="h-48 rounded-xl" />
-          ))}
+          {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-48 rounded-xl" />)}
         </div>
       ) : pending.length === 0 && done.length === 0 ? (
         <div className="text-center py-20 text-muted-foreground">
@@ -79,10 +62,9 @@ export default function KitchenPage() {
         </div>
       ) : (
         <div className="space-y-8">
-          {/* Pending orders */}
           {pending.length > 0 && (
             <section>
-              <h2 className="font-heading text-2xl text-primary mb-4 flex items-center gap-3">
+              <h2 className="font-heading text-xl md:text-2xl text-primary mb-4 flex items-center gap-3">
                 <span className="inline-block w-3 h-3 rounded-full bg-primary animate-pulse" />
                 Pending
               </h2>
@@ -103,9 +85,7 @@ export default function KitchenPage() {
                           <p className="font-heading text-2xl text-primary">#{order.orderNumber}</p>
                           <p className="text-xs text-muted-foreground">{formatTime(order.createdAt)}</p>
                         </div>
-                        <span className="px-3 py-1 bg-primary/20 text-primary border border-primary rounded-full text-xs font-bold uppercase animate-pulse">
-                          Pending
-                        </span>
+                        <span className="px-3 py-1 bg-primary/20 text-primary border border-primary rounded-full text-xs font-bold uppercase animate-pulse">Pending</span>
                       </div>
                       <div className="space-y-1 flex-1">
                         {order.items.map((item, i) => (
@@ -133,19 +113,18 @@ export default function KitchenPage() {
             </section>
           )}
 
-          {/* Done orders */}
           {done.length > 0 && (
             <section>
-              <h2 className="font-heading text-2xl text-muted-foreground mb-4 flex items-center gap-3">
+              <h2 className="font-heading text-xl md:text-2xl text-muted-foreground mb-4 flex items-center gap-3">
                 <span className="inline-block w-3 h-3 rounded-full bg-accent" />
                 Done
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                 {done.map((order) => (
                   <div
                     key={order.id}
                     data-testid={`card-done-${order.id}`}
-                    className="bg-card/50 border border-border rounded-xl p-4 opacity-60"
+                    className="bg-card/50 border border-border rounded-xl p-3 opacity-60"
                   >
                     <div className="flex justify-between items-start mb-2">
                       <p className="font-heading text-xl text-muted-foreground">#{order.orderNumber}</p>
@@ -153,9 +132,7 @@ export default function KitchenPage() {
                     </div>
                     <div className="space-y-1">
                       {order.items.map((item, i) => (
-                        <p key={i} className="text-xs text-muted-foreground">
-                          {item.productName} x{item.quantity}
-                        </p>
+                        <p key={i} className="text-xs text-muted-foreground">{item.productName} x{item.quantity}</p>
                       ))}
                     </div>
                     <p className="text-xs text-muted-foreground mt-2">{formatTime(order.createdAt)}</p>
